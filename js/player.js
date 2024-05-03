@@ -28,10 +28,25 @@ class Player extends Sprite {
 
     shoot() {
         if (this.canShoot()) {
-            let fireball = new Sprite("", this.pos.d1 + (this.dimension.d1 / 2) - 3, this.pos.d2 - 10, 6, 10, "white", 3);
-            this.bullets.push(fireball);
+            let bullet = new Sprite("", this.pos.d1 + (this.dimension.d1 / 2) - 3, this.pos.d2 - 10, 6, 10, "white", 3);
+            this.bullets.push(bullet);
             this.lastShotTime = Date.now();
         }
+    }
+
+    collisioniBullets(altro){
+        let collisione=false;
+        for (let i = 0; i < this.bullets.length; i++) {
+            collisione=this.bullets[i].collisione(altro);
+            if(collisione){
+                this.bullets[i].active=false;
+                this.bullets[i].pos.set(-1,-1);
+                console.log("COLLISIONE")
+                return true;
+            }
+
+        }
+        return false;
     }
 }
 

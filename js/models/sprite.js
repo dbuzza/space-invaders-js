@@ -15,7 +15,6 @@ class Sprite{
     }
 
     update(){
-        this.active=this.health>0;
         
     }
 
@@ -36,6 +35,33 @@ class Sprite{
             this.pos.d1-=this.velocity
         }
     }
+
+    collisione(altro) {
+        if(altro.active=true){
+            const x1 = this.pos.d1;
+            const y1 = this.pos.d2;
+
+            const w1 = this.dimension.d1;
+            const h1 = this.dimension.d2;
+
+            const x2 = altro.pos.d1;
+            const y2 = altro.pos.d2;
+
+            const w2 = altro.dimension.d1;
+            const h2 = altro.dimension.d2;
+        
+            if (
+                x1 < x2 + w2 &&
+                x1 + w1 > x2 &&
+                y1 < y2 + h2 &&
+                y1 + h1 > y2
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
 
 }
 export default Sprite

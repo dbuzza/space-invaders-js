@@ -11,7 +11,6 @@ class Game{
         this.ctx=canvas.getContext('2d');
     }
     init(){
-        this.punteggio.textContent="Punteggio:";//+player.score;
         //this.canvas.style.position = 'absolute';
         this.canvas.width = 400;
         this.canvas.height = 600;
@@ -47,8 +46,15 @@ class Game{
         for (var i = 0; i < 8; i++) {
             for (var j = 0; j < 7; j++) {
                 this.enemies[i][j].update();
+                if(this.player.collisioniBullets(this.enemies[i][j])==true){
+                    this.player.score+=10;
+                    this.enemies[i][j].active=false;
+                }
             }
         }
+        let stringa="Punteggio: "+this.player.score.toString();
+        this.punteggio.textContent=stringa;
+
     }
 
     keyboardPressedHandler(key){
