@@ -1,15 +1,21 @@
 import Enemies from "./models/enemies.js";
 import Player from "./player.js";
-class Game{
+
+class Game {
     canvas;
     punteggio;
+    vita;
     ctx;
+    audioBackground; // Aggiungiamo una proprietà per l'audio di background
     constructor(c,p,v){
         this.canvas=c;
         this.punteggio=p;
         this.vita=v;
-        this.ctx=canvas.getContext('2d');
+        this.ctx=this.canvas.getContext('2d');
+        this.audioBackground = new Audio('../assets/sound/background.wav');
+        this.audioBackground.loop = true;
     }
+
     init(){
         this.canvas.width = 400;
         this.canvas.height = 600;
@@ -18,6 +24,7 @@ class Game{
         this.player=new Player("../assets/img/player.png",180,560,60,30,7,500);
         this.enemies=[];
         this.stopgioco=false;
+        this.audiocounter=false;
         let tempx=20;
         let tempy=30;
         for (var i = 0; i < 8; i++) {
@@ -55,17 +62,23 @@ class Game{
                 }
             }
         } else {
-            // Set the font properties
             this.ctx.font = "30px Arial";
             this.ctx.fillStyle = "white";
             this.ctx.textAlign = "center";
             this.ctx.textBaseline = "middle";
-
-            // Check player's health
+            let audio_src="../assets/sound/";
             if (this.player.health <= 0) {
+                audio_src+="fail.wav";
                 this.ctx.fillText("HAI PERSO, MECCANICO", this.canvas.width / 2, this.canvas.height / 2);
             } else {
+                audio_src+="win.wav"
                 this.ctx.fillText("HAI VINTO", this.canvas.width / 2, this.canvas.height / 2);
+            }
+            if(!this.audiocounter){
+                console.log(audio_src);
+                let audio=new Audio(audio_src);
+                audio.play();
+                this.audiocounter=true;
             }
         }
     }
@@ -89,11 +102,19 @@ class Game{
             }
             if(this.player.health<=0||this.allEnemiesDied()){
                 this.stopgioco=true;
+                this.audioBackground.pause();
+            } else {
+                if (!this.audioBackground.paused||this.audioBackground.played.length <= 0) {
+                    this.audioBackground.play();
+                }
             }
             let stringa="Punteggio: "+this.player.score.toString();
             this.punteggio.textContent=stringa;
             stringa="Vita: "+this.player.health.toString();
             this.vita.textContent=stringa;
+
+            
+            
         }
     }
 
@@ -123,4 +144,5 @@ class Game{
         }
     }
 }
-export default Game
+
+export default Game;
