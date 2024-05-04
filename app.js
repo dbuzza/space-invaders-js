@@ -1,7 +1,8 @@
 import Game from "./js/game.js"
 let canvas=document.getElementById("canvas");
 let punteggio=document.getElementById("punteggio")
-let g=new Game(canvas,punteggio);
+let vita=document.getElementById("vita")
+let g=new Game(canvas,punteggio,vita);
 g.init();
 function runGame( ) {
 

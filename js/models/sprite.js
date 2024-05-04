@@ -2,42 +2,47 @@ import Vector2D from "./vector2d.js"
 
 class Sprite{
 
-    constructor(img_src,x,y,width,height,color,velocity){
+    constructor(img_src,x,y,width,height,velocity,fireRate){
         this.pos=new Vector2D(x,y);
         this.dimension=new Vector2D(width,height);
         this.img=new Image();
         this.img.src=img_src;
-        this.color=color //TODO: da rimuovere
         this.active=true;
         this.score=0;
         this.health=100;
         this.velocity=velocity;
+        this.bullets = [];
+        this.fireRate = fireRate;
+        this.lastShotTime = 0;
     }
 
     update(){
+        if(this.active==true){
+            for (let i = 0; i < this.bullets.length; i++) {
+                this.bullets[i].pos.d2 -= this.bullets[i].velocity;
+            }
+        }
         
     }
 
     draw(ctx){
-        if(this.active){
-            ctx.fillStyle=this.color;
-            ctx.fillRect(this.pos.d1, this.pos.d2, this.dimension.d1, this.dimension.d2);
+        if(this.active==true){
+            ctx.drawImage(this.img,this.pos.d1,this.pos.d2);
+            for (let i = 0; i < this.bullets.length; i++) {
+                this.bullets[i].draw(ctx);
+            }
         }
     }
 
-    movedx(max){
-        if(this.pos.d1<=(max-this.dimension.d1)){
-            this.pos.d1+=this.velocity
-        }
+    movedx(){
+        this.pos.d1+=this.velocity
     }
     movesx(){
-        if(this.pos.d1>0){
-            this.pos.d1-=this.velocity
-        }
+        this.pos.d1-=this.velocity
     }
 
     collisione(altro) {
-        if(altro.active=true){
+        if(altro.active==true){
             const x1 = this.pos.d1;
             const y1 = this.pos.d2;
 
@@ -61,6 +66,33 @@ class Sprite{
         }
         return false;
     }
+
+    canShoot() {
+        return Date.now() - this.lastShotTime > this.fireRate;
+     }
+ 
+     shoot() {
+         if (this.canShoot()) {
+             let bullet = new Sprite("../assets/img/bullet.png", this.pos.d1 + (this.dimension.d1 / 2) - 3, this.pos.d2 - 10, 6, 18, 3);
+             this.bullets.push(bullet);
+             this.lastShotTime = Date.now();
+         }
+     }
+ 
+     collisioniBullets(altro){
+         let collisione=false;
+         for (let i = 0; i < this.bullets.length; i++) {
+             collisione=this.bullets[i].collisione(altro);
+             if(collisione){
+                 this.bullets[i].active=false;
+                 this.bullets[i].pos.set(-1,-1);
+                 console.log("COLLISIONE")
+                 return true;
+             }
+ 
+         }
+         return false;
+     }
     
 
 }
