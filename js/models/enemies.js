@@ -45,5 +45,10 @@ class Enemies extends Sprite{
             super.draw(ctx);
     }
 
+    playShootSound(){
+        this.audio.src="../../assets/sound/shoot_enemies.wav";
+        this.audio.play();
+     }
+
 }
 export default Enemies;

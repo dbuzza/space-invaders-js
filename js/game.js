@@ -75,7 +75,6 @@ class Game {
                 this.ctx.fillText("HAI VINTO", this.canvas.width / 2, this.canvas.height / 2);
             }
             if(!this.audiocounter){
-                console.log(audio_src);
                 let audio=new Audio(audio_src);
                 audio.play();
                 this.audiocounter=true;
@@ -93,7 +92,6 @@ class Game {
                         this.player.score+=10;
                         this.enemies[i][j].active=false;
                         this.enemies[i][j].pos.set(-50,-50);
-                        console.log(this.enemies[i][j].active);
                     }
                     if(this.enemies[i][j].collisioniBullets(this.player)==true){
                         this.player.health-=10;

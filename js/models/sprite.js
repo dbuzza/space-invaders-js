@@ -14,6 +14,7 @@ class Sprite{
         this.bullets = [];
         this.fireRate = fireRate;
         this.lastShotTime = 0;
+        this.audio=new Audio();
     }
 
     update(){
@@ -73,10 +74,16 @@ class Sprite{
  
      shoot() {
          if (this.canShoot()) {
-             let bullet = new Sprite("../assets/img/bullet.png", this.pos.d1 + (this.dimension.d1 / 2) - 3, this.pos.d2 - 10, 6, 18, 3);
-             this.bullets.push(bullet);
-             this.lastShotTime = Date.now();
+            this.playShootSound();
+            let bullet = new Sprite("../assets/img/bullet.png", this.pos.d1 + (this.dimension.d1 / 2) - 3, this.pos.d2 - 10, 6, 18, 3);
+            this.bullets.push(bullet);
+            this.lastShotTime = Date.now();
          }
+     }
+
+     playShootSound(){
+        this.audio.src="../../assets/sound/shoot.wav";
+        this.audio.play();
      }
  
      collisioniBullets(altro){
@@ -86,7 +93,6 @@ class Sprite{
              if(collisione){
                  this.bullets[i].active=false;
                  this.bullets[i].pos.set(-1,-1);
-                 console.log("COLLISIONE")
                  return true;
              }
  
