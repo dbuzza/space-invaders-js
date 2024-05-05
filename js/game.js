@@ -7,18 +7,34 @@ class Game {
     vita;
     ctx;
     audioBackground; // Aggiungiamo una proprietà per l'audio di background
-    constructor(c,p,v){
+    constructor(c,p,v,a){
         this.canvas=c;
         this.punteggio=p;
         this.vita=v;
         this.ctx=this.canvas.getContext('2d');
-        this.audioBackground = new Audio('../assets/sound/background.wav');
-        this.audioBackground.loop = true;
+        this.audioBackground = a;
     }
+
+    centerCanvas() {
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+
+        const canvasWidth = this.canvas.width;
+        const canvasHeight = this.canvas.height;
+
+        const offsetX = (windowWidth - canvasWidth) / 2;
+        const offsetY = (windowHeight - canvasHeight) / 2;
+
+        this.canvas.style.left = offsetX + 'px';
+        this.canvas.style.top = offsetY + 'px';
+    }
+
 
     init(){
         this.canvas.width = 400;
         this.canvas.height = 600;
+        this.canvas.style.left=((window.innerWidth-this.canvas.width)/2)+ 'px'
+        this.canvas.style.top=((window.innerHeight-this.canvas.height)/2)+ 'px'
         this.canvas.style.backgroundColor="black";
         this.canvas.style.backgroundSize = "contain";
         this.player=new Player("../assets/img/player.png",180,560,60,30,7,500);
@@ -98,14 +114,10 @@ class Game {
                     }
                 }
             }
-            if(this.player.health<=0||this.allEnemiesDied()){
-                this.stopgioco=true;
-                this.audioBackground.pause();
-            } else {
-                if (!this.audioBackground.paused||this.audioBackground.played.length <= 0) {
-                    this.audioBackground.play();
+                if(this.player.health<=0||this.allEnemiesDied()){
+                    this.stopgioco=true;
+                    this.audioBackground.pause();
                 }
-            }
             let stringa="Punteggio: "+this.player.score.toString();
             this.punteggio.textContent=stringa;
             stringa="Vita: "+this.player.health.toString();
