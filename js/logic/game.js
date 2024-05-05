@@ -1,5 +1,5 @@
-import Enemies from "./models/enemies.js";
-import Player from "./player.js";
+import Enemies from "../models/enemies.js";
+import Player from "../models/player.js";
 
 class Game {
     canvas;

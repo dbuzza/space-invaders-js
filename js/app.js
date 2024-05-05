@@ -1,12 +1,21 @@
-import Game from "./js/game.js";
+import Game from "./logic/game.js";
 
 let canvas = document.getElementById("canvas");
 let punteggio = document.getElementById("punteggio");
 let vita = document.getElementById("vita");
 let audio = new Audio('../assets/sound/background.wav');
+let btn=document.getElementById("btnGioco");
+let g;
 
-let g = new Game(canvas, punteggio, vita, audio);
-g.init();
+function initializeGame() {
+    btn.style.visibility = "hidden";
+    g = new Game(canvas, punteggio, vita, audio);
+    g.init();
+    runGame();
+    audio.loop=true;
+    audio.play();
+    window.addEventListener("keydown", keyDownHandler);
+}
 
 function runGame() {
     g.update();
@@ -14,18 +23,9 @@ function runGame() {
     requestAnimationFrame(runGame);
 }
 
-runGame();
-
 function keyDownHandler(event) {
     g.keyboardPressedHandler(event.key.toLowerCase());    
 }
 
-function keyUpHandler(event) {
-    g.keyboardReleasedHandler(event.key.toLowerCase());
-}
+btn.addEventListener("click", initializeGame);
 
-window.addEventListener("keydown", keyDownHandler);
-window.addEventListener('load', () => {
-    audio.loop=true;
-    audio.play();
-});

@@ -1,4 +1,4 @@
-import Sprite from "./models/sprite.js";
+import Sprite from "./sprite.js";
 
 class Player extends Sprite {
     constructor(img_src, x, y, width, height, velocity, fireRate) {
